@@ -5,15 +5,16 @@ genai.configure(api_key="AIzaSyDKcxALky8LiROaxb0RGMw8TLLOcujMRMY")
 model = genai.GenerativeModel(model_name="gemini-pro")
 
 def get_user_profile():
-    # Function to collect user profile information
     reading_level_options = ["Preschool", "Elementary (K-2)", "Elementary (3-5)"]
     selected_reading_level = st.selectbox("Select your child's reading level:", reading_level_options)
     interests = st.text_input("What is your child interested in? (Separate interests with commas):")
     character = st.selectbox("Choose your favorite character:", ["Twinkle", "Maya", "Robin", "Trio"])
-    return {"reading_level": selected_reading_level, "interests": interests.split(","), "character": character.lower()}
+    if selected_reading_level and interests and character:
+        return {"reading_level": selected_reading_level, "interests": interests.split(","), "character": character.lower()}
+    else:
+        return None
 
 def generate_story(user_profile):
-    # Generate a story based on the user profile
     reading_level = user_profile["reading_level"]
     interests = ",".join(user_profile["interests"])
     character = user_profile["character"]
@@ -25,23 +26,23 @@ def generate_story(user_profile):
     return story_segment
 
 def main():
-    st.title("Interactive Storytelling")
-    st.write("Once upon a time, in a magical forest...")
+    st.title("Come and listen to Amazing story about the character you choose!!!")
+    user_profile = get_user_profile()
+    if user_profile:
+        while True:
+            if st.button("Give me a story!"):
+                story_segment = generate_story(user_profile)
+                st.write(story_segment.text)
 
-    if st.button("Give me a story!"):
-        user_profile = get_user_profile()
-        story_segment = generate_story(user_profile)
-        st.write(story_segment.text)
+                choice = st.radio("What would you like to do next?", ("I want to listen more!", "I'm bored, I want to quit"))
+                if choice == "I want to listen more!":
+                    continue  # Go back to generate another story
+                else:
+                    st.write("You've chosen to stop listening to stories! Come back again to listen to more!")
+                    break  # Exit the loop if "I'm bored, I want to quit" is clicked
+    else:
+        st.warning("Please enter all the values for the user profile.")
 
-        choice = st.radio("Do you want to continue listening to stories?", ("Yes", "No"))
-        while choice == "Yes":
-            st.write("You've chosen to listen to another story!")
-            story_segment = generate_story(user_profile)
-            st.write(story_segment.text)
-            choice = st.radio("Do you want to continue listening to stories?", ("Yes", "No"))
-
-        if choice == "No":
-            st.write("You've chosen to stop listening to stories! Come back again to listen to more!")
 
 if __name__ == "__main__":
     main()
