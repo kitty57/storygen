@@ -22,7 +22,7 @@ def get_user_profile():
         # Display the selected character's image with adjusted size
         image_url = characters[character]
         image = Image.open(requests.get(image_url, stream=True).raw)
-        st.image(image, caption=character, width=100)  # Adjust width and height as needed
+        st.image(image, caption=character, width=250)  # Adjust width and height as needed
         return {"reading_level": selected_reading_level, "interests": interests.split(","), "character": character.lower()}
     else:
         return None
