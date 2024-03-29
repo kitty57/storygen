@@ -25,24 +25,23 @@ def generate_story(user_profile):
     return story_segment
 
 def main():
-    # Main function to run the Streamlit app
     st.title("Interactive Storytelling")
-
-    user_profile = get_user_profile()
-
     st.write("Once upon a time, in a magical forest...")
-    story_segment = generate_story(user_profile)
-    st.write(story_segment.text)
 
-    choice = st.radio("Do you want to continue listening to stories?", ("Yes", "No"))
-    while choice == "Yes":
-        st.write("You've chosen to listen to another story!")
+    if st.button("Give me a story!"):
+        user_profile = get_user_profile()
         story_segment = generate_story(user_profile)
         st.write(story_segment.text)
-        choice = st.radio("Do you want to continue listening to stories?", ("Yes", "No"))
 
-    if choice == "No":
-        st.write("You've chosen to stop listening to stories! Come back again to listen to more!")
+        choice = st.radio("Do you want to continue listening to stories?", ("Yes", "No"))
+        while choice == "Yes":
+            st.write("You've chosen to listen to another story!")
+            story_segment = generate_story(user_profile)
+            st.write(story_segment.text)
+            choice = st.radio("Do you want to continue listening to stories?", ("Yes", "No"))
+
+        if choice == "No":
+            st.write("You've chosen to stop listening to stories! Come back again to listen to more!")
 
 if __name__ == "__main__":
     main()
