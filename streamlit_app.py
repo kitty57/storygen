@@ -31,11 +31,11 @@ def main():
     if user_profile:
         if st.button("Give me a story!"):
             story_segment = generate_story(user_profile)
-            st.write(story_segment.text)
+            st.info(story_segment.text)
             st.write("What would you like to do next?")
             if st.button("Generate Another Story"):
                 story_segment = generate_story(user_profile)
-                st.write(story_segment.text)
+                st.info(story_segment.text)
             if st.button("Stop Listening"):
                 st.write("You've chosen to stop listening to stories! Come back again to listen to more!")
     else:
