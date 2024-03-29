@@ -24,24 +24,28 @@ def generate_story(user_profile):
     """
     story_segment = model.generate_content(prompt)
     return story_segment
+
 def main():
     st.title("Come and listen to Amazing story about the character you choose!!!")
     user_profile = get_user_profile()
     if user_profile:
         while True:
-            if st.button("Give me a story!", key="generate_story_button"):
+            key_suffix = f"{user_profile['reading_level']}_{','.join(user_profile['interests'])}_{user_profile['character'].lower()}"
+            generate_story_button_key = f"generate_story_button_{hash(key_suffix)}"
+            choice_radio_key = f"choice_radio_{hash(key_suffix)}"
+            if st.button("Give me a story!", key=generate_story_button_key):
                 story_segment = generate_story(user_profile)
                 st.write(story_segment.text)
-
-                choice = st.radio("What would you like to do next?", ("I want to listen more!", "I'm bored, I want to quit"), key="choice_radio")
+                choice = st.radio("What would you like to do next?", ("I want to listen more!", "I'm bored, I want to quit"), key=choice_radio_key)
                 if choice == "I want to listen more!":
-                    continue  # Go back to generate another story
+                    continue 
                 elif choice == "I'm bored, I want to quit":
                     st.write("You've chosen to stop listening to stories! Come back again to listen to more!")
-                    break  # Exit the loop if "I'm bored, I want to quit" is clicked
+                    break 
                 else:
                     st.warning("Please select an option.")
     else:
         st.warning("Please enter all the values for the user profile.")
+
 if __name__ == "__main__":
     main()
