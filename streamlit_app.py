@@ -23,13 +23,9 @@ def generate_story(user_profile):
   Generate a story suitable for a {reading_level} year old child 
   who is interested in {interests}. The story should be interactive 
   and allow the child to make choices that affect the outcome.
-
   **[INSERT STORY SEGMENT HERE]** (This part will be replaced by the generated text)
   """
-
-
   command = f"""curl -X POST -H "Authorization: Bearer {API_KEY}" -H "Content-Type: application/json" -d '{{"prompt": "{prompt}"}}' "{API_ENDPOINT}" -o output.txt"""
-t
   process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   output, error = process.communicate()
   if error:
