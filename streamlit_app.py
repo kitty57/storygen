@@ -1,5 +1,9 @@
-from PIL import Image
 import streamlit as st
+from PIL import Image
+import google.generativeai as genai
+
+genai.configure(api_key="AIzaSyDKcxALky8LiROaxb0RGMw8TLLOcujMRMY")
+model = genai.GenerativeModel(model_name="gemini-pro")
 
 def get_user_profile():
     reading_level_options = ["Preschool", "Elementary (K-2)", "Elementary (3-5)"]
@@ -18,6 +22,16 @@ def get_user_profile():
     else:
         return None
 
+def generate_story(user_profile):
+    reading_level = user_profile["reading_level"]
+    interests = ",".join(user_profile["interests"])
+    character = user_profile["character"]
+    prompt = f"""
+    Generate a story suitable for a {reading_level} year old child 
+    who is interested in {interests} with a character named {character}.
+    """
+    story_segment = model.generate_content(prompt)
+    return story_segment
 def main():
     st.title("Come and listen to Amazing story about the character you choose!!!")
     user_profile = get_user_profile()
@@ -40,3 +54,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
