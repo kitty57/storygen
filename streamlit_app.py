@@ -35,10 +35,11 @@ def main():
 
             choice_radio = st.radio("What would you like to do next?", ("I want to listen more!", "I'm bored, I want to quit"))
             if choice_radio == "I want to listen more!":
-                pass  # Do nothing, allowing the user to generate more stories
+                story_segment = generate_story(user_profile)
+                st.write(story_segment.text)
             elif choice_radio == "I'm bored, I want to quit":
                 st.write("You've chosen to stop listening to stories! Come back again to listen to more!")
-
+                break
     else:
         st.warning("Please enter all the values for the user profile.")
 
