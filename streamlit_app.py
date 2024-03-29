@@ -1,6 +1,7 @@
 import streamlit as st
 from PIL import Image
 import google.generativeai as genai
+import requests  # Import requests library to fetch image URLs
 
 genai.configure(api_key="AIzaSyDKcxALky8LiROaxb0RGMw8TLLOcujMRMY")
 model = genai.GenerativeModel(model_name="gemini-pro")
@@ -32,10 +33,17 @@ def generate_story(user_profile):
     """
     story_segment = model.generate_content(prompt)
     return story_segment
+
 def main():
     st.title("Come and listen to Amazing story about the character you choose!!!")
     user_profile = get_user_profile()
     if user_profile:
+        characters = {
+            "Twinkle": "https://th.bing.com/th/id/OIP.wO1fi5o9K_cuTqKoEkylKgAAAA?rs=1&pid=ImgDetMain",
+            "Maya": "https://th.bing.com/th/id/OIP.3mHNwJMuJEd5O7UGv0HW5gHaNK?rs=1&pid=ImgDetMain",
+            "Tia": "https://th.bing.com/th/id/OIP.aCDDfBfOVZ5ggZC5sgvd3wHaHa?rs=1&pid=ImgDetMain",
+            "Lily": "https://img.freepik.com/premium-photo/cute-girl-happy-cartoon-character_74102-2378.jpg"
+        }
         character = user_profile["character"]
         image_url = characters[character]
         image = Image.open(requests.get(image_url, stream=True).raw)
@@ -54,4 +62,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
