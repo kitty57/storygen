@@ -47,7 +47,7 @@ def main():
 
   choice1 = st.button("Go left")
   choice2 = st.button("Go right")
-  if choice1
+  if choice1:
     pass
   elif choice2:
     pass
