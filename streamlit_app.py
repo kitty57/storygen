@@ -19,10 +19,10 @@ def get_user_profile():
     
     character = st.selectbox("Choose your favorite character:", list(characters.keys()), format_func=lambda x: x, help="Click on the character to select")
     if selected_reading_level and interests and character:
-        # Display the selected character's image
+        # Display the selected character's image with adjusted size
         image_url = characters[character]
         image = Image.open(requests.get(image_url, stream=True).raw)
-        st.image(image, caption=character, use_column_width=True)
+        st.image(image, caption=character, use_column_width=True, width=200)  # Adjust width as needed
         return {"reading_level": selected_reading_level, "interests": interests.split(","), "character": character.lower()}
     else:
         return None
