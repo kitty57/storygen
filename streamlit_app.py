@@ -29,19 +29,26 @@ def main():
     st.title("Come and listen to Amazing story about the character you choose!!!")
     user_profile = get_user_profile()
     if user_profile:
+        story_generated = False 
         while True:
-            key_suffix = f"{user_profile['reading_level']}_{','.join(user_profile['interests'])}_{user_profile['character'].lower()}"
-            generate_story_button_key = f"generate_story_button_{hash(key_suffix)}"
-            choice_radio_key = f"choice_radio_{hash(key_suffix)}"
-            if st.button("Give me a story!", key=generate_story_button_key):
-                story_segment = generate_story(user_profile)
-                st.write(story_segment.text)
+            if not story_generated:
+                key_suffix = f"{user_profile['reading_level']}_{','.join(user_profile['interests'])}_{user_profile['character'].lower()}"
+                generate_story_button_key = f"generate_story_button_{hash(key_suffix)}"
+                
+                if st.button("Give me a story!", key=generate_story_button_key):
+                    story_segment = generate_story(user_profile)
+                    st.write(story_segment.text)
+                    story_generated = True  
+
+            if story_generated:
+                choice_radio_key = f"choice_radio_{hash(key_suffix)}"
                 choice = st.radio("What would you like to do next?", ("I want to listen more!", "I'm bored, I want to quit"), key=choice_radio_key)
                 if choice == "I want to listen more!":
+                    story_generated = False  
                     continue 
                 elif choice == "I'm bored, I want to quit":
                     st.write("You've chosen to stop listening to stories! Come back again to listen to more!")
-                    break 
+                    break  
                 else:
                     st.warning("Please select an option.")
     else:
